@@ -12,13 +12,14 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  name: Rustfmt
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v4
-    - uses: dtolnay/rust-toolchain@stable
-      with:
-        components: rustfmt
-    - name: Formatting check
-      run: cargo fmt --check
-      working-directory: justid
+  fmt:
+    name: Rustfmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - name: Enforce formatting
+        run: cargo fmt --check
+        working-directory: retail-sync-backend
