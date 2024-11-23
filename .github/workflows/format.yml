@@ -22,4 +22,4 @@ jobs:
           components: rustfmt
       - name: Enforce formatting
         run: cargo fmt --check
-        working-directory: retail-sync-backend
+        working-directory: justid
