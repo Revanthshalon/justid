@@ -1,11 +1,12 @@
 #![allow(dead_code)]
 // Standard library imports
-use std::time::Duration;
+use std::{collections::HashMap, time::Duration};
 
 // External crate imports
 use bytesize::{self, ByteSize};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use x::tracex;
 
 // Default configuration constants
 pub const DEFAULT_IDENTITY_TRAITS_SCHEMA_ID: &str = "default";
@@ -131,3 +132,54 @@ pub struct PasswordPolicy {
 
 /// Type alias for a collection of schemas
 type Schemas = Vec<Schema>;
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CourierEmailBodyTemplate {
+    pub plain_text: String,
+    pub html: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CourierEmailTemplate {
+    pub body: CourierEmailBodyTemplate,
+    pub subject: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CourierSmsTemplateBody {
+    pub plain_text: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CourierSmsTemplate {
+    pub body: CourierSmsTemplateBody,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SmtpConfig {
+    pub connection_uri: String,
+    pub client_cert_path: String,
+    pub client_key_path: String,
+    pub from_address: String,
+    pub from_name: String,
+    pub headers: HashMap<String, String>,
+    pub local_name: String,
+}
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CourierChannel {
+    pub id: String,
+    pub channel_type: String,
+    pub smtp_config: SmtpConfig,
+    pub request_config: Value,
+    // NOTE: Kratos has this request_config_raw, unsure of the usage. Uncomment when sure.
+    // pub request_config_raw: HashMap<String, String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PasswordMigrationHook {
+    pub enabled: bool,
+    pub config: Value,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Config {}
